@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JW Player HLS Stream</title>
+    <!-- JW Player Library -->
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.26.0/jwplayer.js"></script>
+    <script>jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';</script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            padding-top:0px;
+        }
+        #player-container {
+            width: 100%;
+            background-color: #000000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+            position: fixed;
+            top: 160px;
+            background-color: #000000;
+            padding: 10px 0;
+            z-index: 90;
+        }
+        @media (min-width: 800px) {
+            .controls {
+                top: 450px;
+            }
+        }
+        
+        button {
+            padding: 8px 15px;
+            background-color: #2b6cb0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2c5282;
+        }
+        .player-info {
+            font-size: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #eee;
+            border-radius: 4px;
+        }
+        .stream-buttons {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .stream-button {
+            width: 85px;
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .stream-button:hover {
+            transform: scale(1.05);
+        }
+        .stream-button img {
+            width: 85px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #dce6e5;
+            background-color: #fff;
+        }
+        .stream-button p {
+            margin: 5px 0 0;
+            font-weight: bold;
+            font-size: 12px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="player-container"></div>
+    
+    <div class="controls">
+        <button onclick="jwplayer().play()">▶ Play</button>
+        <button onclick="jwplayer().pause()">⏸ Pause</button>
+        <button onclick="toggleMute()" id="mute-btn">🔇 Mute</button> 
+        <button onclick="toggleFullscreen()" id="fullscreen-btn">⛶ </button>
+    </div>
+    
+    <h1 style="text-align: center; padding-top: 5%;"></h1>
+    
+    <div class="stream-buttons">
+        <div class="stream-button" onclick="changeStream('https://live-dangal.akamaized.net/liveabr/playlist.m3u8', 'Dangal TV')">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Dangal.png" alt="Dangal TV">
+            <p>Dangal TV</p>
+        </div>
+        
+        <div class="stream-button" onclick="changeStream('https://d14c63magvk61v.cloudfront.net/strm/channels/9xjalwa/master.m3u8', '9x Jalwa')">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/9XJalwa.png" alt="9x Jalwa">
+            <p>9x Jalwa</p>
+        </div>
+        
+        <div class="stream-button" onclick="changeStream('https://d14c63magvk61v.cloudfront.net/strm/channels/9xm/master.m3u8', '9XM')">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/9XM.png" alt="9XM">
+            <p>9XM</p>
+        </div>
+        
+        <div class="stream-button" onclick="changeStream('https://example.com/stream4.m3u8', 'Star Utsav')">
+            <img src="https://jiotv.catchup.cdn.jio.com/dare_images/images/Star_Utsav.png" alt="Star Utsav">
+            <p>Star Utsav</p>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <body style="background-color:#000000;">
+    
+    
+    
+    
+    
+    
+    
+    <div class="player-info">
+        <p>Status: <span id="player-status">Loading...</span></p>
+        <p>Current Stream: <span id="current-stream">None</span></p>
+    </div>
+
+    <script>
+        // Setup the player with initial HLS stream
+        jwplayer("player-container").setup({
+            playlist: [{
+                file: "https://live-dangal.akamaized.net/liveabr/playlist.m3u8",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScZMZCSiLR0N1v7zj4hK-V_F11ZRX56e41rZm6AQs2i9sgEVCt0ZucXHQL&s=10",
+                title: "Live Stream",
+                description: "HLS Live Stream Playback"
+            }],
+            width: "100%",
+            aspectratio: "16:9",
+            autostart: false,
+            mute: false,
+            primary: "html5",
+            hlshtml: true,
+            stretching: "uniform"
+        });
+        
+        // Function to change the stream
+        function changeStream(streamUrl, streamName) {
+            jwplayer().load([{
+                file: streamUrl,
+                image: "https://via.placeholder.com/1280x720/333333/FFFFFF?text=" + encodeURIComponent(streamName),
+                title: streamName,
+                description: "Now playing: " + streamName
+            }]);
+            
+            document.getElementById('current-stream').textContent = streamName;
+            document.getElementById('player-status').textContent = 'Stream changed to ' + streamName;
+            
+            // Auto-play the new stream
+            jwplayer().play();
+        }
+        
+        // Toggle mute function
+        function toggleMute() {
+            const isMuted = jwplayer().getMute();
+            jwplayer().setMute(!isMuted);
+            document.getElementById('mute-btn').textContent = !isMuted ? '🔊 Unmute' : '🔇 Mute';
+        }
+        
+        // Toggle fullscreen function
+        function toggleFullscreen() {
+            const player = jwplayer();
+            if (player.getFullscreen()) {
+                player.setFullscreen(false);
+                document.getElementById('fullscreen-btn').textContent = '⛶ Fullscreen';
+            } else {
+                player.setFullscreen(true);
+                document.getElementById('fullscreen-btn').textContent = '⛶ Exit Fullscreen';
+            }
+        }
+        
+        // Event listeners
+        jwplayer().on('ready', function() {
+            document.getElementById('player-status').textContent = 'Ready';
+            document.getElementById('current-stream').textContent = 'Dangal TV';
+        });
+        
+        jwplayer().on('play', function() {
+            document.getElementById('player-status').textContent = 'Playing';
+        });
+        
+        jwplayer().on('pause', function() {
+            document.getElementById('player-status').textContent = 'Paused';
+        });
+    </script>
+</body>
+</html>
